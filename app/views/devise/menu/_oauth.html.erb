@@ -1,0 +1,1 @@
+<%= link_to('Stripe Connect', stripe_oauth_path) if current_user && !current_user.try(:seller) %>

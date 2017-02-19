@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  purchase: one
+  application_fee: MyString
+  source: MyString
+
+two:
+  purchase: two
+  application_fee: MyString
+  source: MyString

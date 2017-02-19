@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Purchase:</strong>
+  <%= @charge.purchase %>
+</p>
+
+<p>
+  <strong>Application fee:</strong>
+  <%= @charge.application_fee %>
+</p>
+
+<p>
+  <strong>Stripe Response:</strong>
+<pre>
+<%= raw JSON.pretty_generate(@charge.stripe_response).gsub(" ","&nbsp;") %>
+</pre>
+<%= link_to 'Edit', edit_charge_path(@charge) %> |
+<%= link_to 'Back', charges_path %>
+</p>

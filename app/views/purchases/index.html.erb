@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Purchases</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Buyer</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @purchases.each do |purchase| %>
+      <tr>
+        <td><%= purchase.product.name %></td>
+        <td><%= purchase.buyer.name %></td>
+        <td><%= link_to 'Destroy', purchase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Purchase', new_purchase_path %>

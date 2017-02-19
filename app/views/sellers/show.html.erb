@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @seller.user %>
+</p>
+
+<p>
+  <strong>Publishable key:</strong>
+  <%= @seller.publishable_key %>
+</p>
+
+<p>
+  <strong>Secret key:</strong>
+  <%= @seller.secret_key %>
+</p>
+
+<p>
+  <strong>Stripe user:</strong>
+  <%= @seller.stripe_user_id %>
+</p>
+
+<%= link_to 'Edit', edit_seller_path(@seller) %> |
+<%= link_to 'Back', sellers_path %>

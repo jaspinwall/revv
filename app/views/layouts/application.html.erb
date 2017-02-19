@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Revv</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+</head>
+
+<body>
+<ul class="hmenu">
+  <%= render 'devise/menu/registration_items' %>
+  <%= render 'devise/menu/buyers' %>
+  <%= render 'devise/menu/sellers' %>
+  <%= render 'devise/menu/products' %>
+  <%= render 'devise/menu/purchases' %>
+  <%= render 'devise/menu/charges' %>
+  <%= render 'devise/menu/oauth' %>
+  <%= render 'devise/menu/login_items' %>
+</ul>
+<%= content_tag(:body, :data => { :controller => params[:controller], :action => params[:action] }) do %>
+    <%= yield %>
+<% end %>
+</body>
+</html>
