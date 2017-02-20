@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Thank you for your order <%= @purchase.buyer.name %></h1>
+    <p>
+      You have successfully have purchase <%= @purchase.product.name %>
+      The amount charged to your credit card is: <%= @purchase.product.price %>.<br>
+    </p>
+    <p>
+      You can view your order at: <%= link_to @purchase %>.
+    </p>
+  </body>
+</html>
