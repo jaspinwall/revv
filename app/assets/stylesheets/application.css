@@ -21,4 +21,5 @@ ul.hmenu {
 
 ul.hmenu li {
     display: inline;
+    margin: 0 1em;
 }
