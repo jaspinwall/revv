@@ -71,11 +71,12 @@ After_create to associate the new product with the current user as the product s
 The controllers are left generic to allow the demonstration of the callback feature. 
 
 It is the Rails philosophy to keep the controllers thin, to restrict the models to act mostly
-on persisting and retrieving records and to create Plain Old Ruby Objects (POGO) to deal
-with business logic that requires more than one model.
+on persisting and retrieving records and to create ActiveSupport::Concern and Plain Old Ruby Objects (POGO) to deal
+with business logic or code that requires access to more than one model.
 
-To keep this application simple, I have created a module Stripe to be mixed into the 
-
+To keep this application simple, I have created a ActiveSupport::Concern module StripeConnect to be mixed into the 
+StripeController using 'include StripeConnect'. StripeConnect implements the logic to connect Stripe account
+with OAuth.
 
 The product model has the class method Product.allowed_to_create? which returns a boolean 
 that determines whether the logged user is allowed to create a new product. This method

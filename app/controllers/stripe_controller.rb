@@ -2,7 +2,7 @@ class StripeController < ApplicationController
   include StripeConnect
 
   def oauth
-    url, error = oauth_url(redirect_uri: 'http://173.66.176.122:3000/stripe/confirm/')
+    url, error = oauth_url
 
     if url.nil?
       flash[:error] = error

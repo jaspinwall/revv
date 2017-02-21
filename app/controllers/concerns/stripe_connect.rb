@@ -1,22 +1,12 @@
 module StripeConnect
   extend ActiveSupport::Concern
 
-  def oauth_url(params)
-    client = OAuth2::Client.new(
-      Rails.application.secrets.stripe_client_id,
-      Rails.application.secrets.stripe_secret_key,
-      {
-        site: 'https://connect.stripe.com',
-        authorize_url: '/oauth/authorize',
-        token_url: '/oauth/token'
-      }
-    ).auth_code
-
-    url = client.authorize_url(
-      {
+  def oauth_url
+    url = oauth_client.authorize_url(
         scope: 'read_write',
-        stripe_landing: 'login'
-      }.merge(params))
+        stripe_landing: 'login',
+        redirect_uri: Rails.application.secrets.stripe_url
+      )
 
     restclient_get(url)
 
@@ -24,17 +14,7 @@ module StripeConnect
   end
 
   def verify!(code)
-    client = OAuth2::Client.new(
-      Rails.application.secrets.stripe_client_id,
-      Rails.application.secrets.stripe_secret_key,
-      {
-        site: 'https://connect.stripe.com',
-        authorize_url: '/oauth/authorize',
-        token_url: '/oauth/token'
-      }
-    ).auth_code
-
-    data = client.get_token(code, {
+    data = oauth_client.get_token(code, {
       headers: {
         'Authorization' => "Bearer #{Rails.application.secrets.stripe_secret_key}"
       }
@@ -50,6 +30,18 @@ module StripeConnect
       publishable_key: data.params['stripe_publishable_key'],
       secret_key: data.token
     )
+  end
+
+  def oauth_client
+    OAuth2::Client.new(
+      Rails.application.secrets.stripe_client_id,
+      Rails.application.secrets.stripe_secret_key,
+      {
+        site: 'https://connect.stripe.com',
+        authorize_url: '/oauth/authorize',
+        token_url: '/oauth/token'
+      }
+    ).auth_code
   end
 
   def restclient_get(url)
