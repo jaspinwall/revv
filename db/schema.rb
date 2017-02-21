@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170221162128) do
+ActiveRecord::Schema.define(version: 20170221233242) do
 
   create_table "buyers", force: :cascade do |t|
     t.integer  "user_id"
@@ -34,8 +34,9 @@ ActiveRecord::Schema.define(version: 20170221162128) do
     t.integer  "seller_id"
     t.string   "name"
     t.integer  "price_cents"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "lock_version"
     t.index ["seller_id"], name: "index_products_on_seller_id"
   end
 
