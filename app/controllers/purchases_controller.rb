@@ -65,10 +65,10 @@ class PurchasesController < ApplicationController
     product = Product.find(params[:product_id])
     buyer = Buyer.find(params[:buyer_id])
     purchase = Purchase.create(product: product, buyer: buyer)
-    application_fee = (product.price * 0.1).to_i
+    application_fee = (product.price.to_f * 10).to_i
 
     charge_attrs = {
-      amount: product.price,
+      amount: (product.price.to_f * 100).to_i,
       currency: 'usd',
       source: params[:token],
       description: product.name,
@@ -76,7 +76,7 @@ class PurchasesController < ApplicationController
     }
 
     charge = Stripe::Charge.create(charge_attrs, product.seller.secret_key)
-    Charge.create(purchase: purchase, application_fee: application_fee, stripe_response: charge.to_h) #TODO: store the charge response
+    Charge.create(purchase: purchase, application_fee_cents: application_fee, stripe_response: charge.to_h) #TODO: store the charge response
 
     @pay = OpenStruct.new(
       product_name: product.name,

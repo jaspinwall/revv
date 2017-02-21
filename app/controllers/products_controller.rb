@@ -24,7 +24,7 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    @product = Product.new(product_params.merge(seller: Seller.last))
+    @product = Product.new(product_params)
 
     respond_to do |format|
       if @product.save
@@ -54,11 +54,14 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-    CurrentScope.current_user = current_user
-    @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
-      format.json { head :no_content }
+      if @product.destroy
+        format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to products_url, notice: 'You cannot delete another\'s seller product' }
+        format.json { head :no_content, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -66,13 +69,14 @@ class ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def product_params
-      params.require(:product).permit(:seller_id, :name, :price)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def product_params
+    params[:product]['price_cents'] = params[:product]['price'].to_f * 100
+    params.require(:product).permit(:seller_id, :name, :price_cents)
+  end
 end

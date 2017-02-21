@@ -2,11 +2,30 @@ class Product < ApplicationRecord
   belongs_to :seller
   has_many :purchases, dependent: :destroy
 
-  validates :name, presence: true, uniqueness: true, length: { minimum: 2 }
-  validates :price, presence: true, numericality: { only_integer: true, greater_than: 0 }
+
+  monetize :price_cents
+
+  validates :name, presence: true, uniqueness: true, length: {minimum: 2}
+  validates :price_cents, presence: true, numericality: {only_integer: true, greater_than: 0}
+
+  after_create do |product|
+    seller = CurrentScope.current_user.seller
+    if seller.present?
+      product.update(seller_id: seller.id)
+    else
+      throw(:abort)
+    end
+  end
+
+  before_update do |product|
+    unless CurrentScope.current_user.seller == product.seller
+      product.errors.add(:seller, :bad_seller, message: 'You cannot update a product from another seller')
+      throw(:abort)
+    end
+  end
 
   before_destroy do |product|
-    throw(:abort) if CurrentScope.current_user.seller.id == product.seller.id
+    throw(:abort) unless CurrentScope.current_user.seller == product.seller
   end
 
 end

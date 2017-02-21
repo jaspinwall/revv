@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217154622) do
+ActiveRecord::Schema.define(version: 20170221162128) do
 
   create_table "buyers", force: :cascade do |t|
     t.integer  "user_id"
@@ -22,20 +22,20 @@ ActiveRecord::Schema.define(version: 20170217154622) do
 
   create_table "charges", force: :cascade do |t|
     t.integer  "purchase_id"
-    t.string   "application_fee"
     t.string   "source"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.text     "stripe_response"
+    t.integer  "application_fee_cents"
     t.index ["purchase_id"], name: "index_charges_on_purchase_id"
   end
 
   create_table "products", force: :cascade do |t|
     t.integer  "seller_id"
     t.string   "name"
-    t.integer  "price"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "price_cents"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.index ["seller_id"], name: "index_products_on_seller_id"
   end
 

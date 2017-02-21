@@ -24,6 +24,6 @@
   window.stripe = {};
   window.stripe.publishable = '<%= @product.seller.publishable_key %>';
   window.stripe.currentUserEmail = '<%= current_user.email %>';
-  window.stripe.amount = <%= @product.price %>;
+  window.stripe.amount = <%= @product.price * 100 %>;
   window.stripe.description = '<%= @product.name %>'
 </script>
