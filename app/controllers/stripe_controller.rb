@@ -1,7 +1,7 @@
 class StripeController < ApplicationController
 
   def oauth
-    url, error = oauth_url(redirect_uri: 'http://informatk.com:3002/stripe/confirm')
+    url, error = oauth_url(redirect_uri: 'http://173.66.176.122:3000/stripe/confirm/')
 
     if url.nil?
       flash[:error] = error
