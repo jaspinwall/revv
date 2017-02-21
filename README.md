@@ -1,25 +1,83 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+This is a basic application to implement code for sellers and buyers.
+It implement DEVISE for user authentication. 
 
-* Ruby version
+Any registered user is automatically added as a buyer. To become a seller
+a user has to connect his account by pressing the 'Stripe Connect' link at the top menu.
 
-* System dependencies
+Once a user has connected the stripe account, he is allowed to enter new products to be sold.
 
-* Configuration
+This app implements multiple sellers and the products are associated to the seller account when created.
 
-* Database creation
+A buyer can purchase a product one at a time by clicking the pay link next to the product.
 
-* Database initialization
+The user must press the order button in the pay page to purchase the product. At this time a modal window is open with the credit card, expiration date and CVC code input elements.
 
-* How to run the test suite
+When the user presses the Pay button, a stripe trasaction is generated, the purchase record created and a charge record with the stripe information stored.
 
-* Services (job queues, cache servers, search engines, etc.)
+This app uses the gem Money to handle the interface for currency with ActiveRecord.
 
-* Deployment instructions
+The app implements thread_mattr_accessor, a new feature from Rails 5, to pass the current_user from the controller to the model.
 
-* ...
-# revv
+The buyer receives an email when the order is successfully executed with the basic purchase information. To view the emails generated, go to [App Generated Email](http://173.66.176.122:1080/ "Mail")
+
+When a seller connects his Stripe account an email is also generated.
+
+The app was generated with scaffold. There are five model/controller/view plus the User model used by devise.
+
+```
+User
+  email: string
+  has_one :buyer
+  has_one :seller
+
+Buyer
+  name: string
+  belongs_to :user
+  has_many :purchases
+
+Seller
+  publishable_key: string
+  secret_key: string
+  stripe_user_id: string
+  name: string
+  belongs_to :user
+  has_many :products
+
+Product
+  name: string
+  price_cents: integer
+  belongs_to :seller
+  has_many :purchases
+
+Purchase
+  belongs_to :buyer
+  belongs_to :product
+  has_one :charge
+
+Charge
+  source: string
+  stripe_response: text
+  application_fee_cents: integer
+  belongs_to :purchase
+```
+
+The product controller uses three callbacks. Note that Rails 5 requires the throw(:abort) to
+prevent the action. Note also that Rails 5 makes belongs_to requires the associated record, in
+contrast to previous version that the associated record was optional.
+
+After_create to associate the new product with the current user as the product seller. The before_update and before_destroy check that the action is performed by product seller and prevents either a buyer or other sellers to make changes or delete the product.
+The controllers are left generic to allow the demonstration of the callback feature. 
+
+It is the Rails philosophy to keep the controllers thin, to restrict the models to act mostly
+on persisting and retrieving records and to create Plain Old Ruby Objects (POGO) to deal
+with business logic that requires more than one model.
+
+To keep this application simple, I have created a module Stripe to be mixed into the 
+
+
+The product model has the class method Product.allowed_to_create? which returns a boolean 
+that determines whether the logged user is allowed to create a new product. This method
+can be used also to make Show/Edit/Destroy visible, but it is not implemented to test the
+callbacks.

@@ -2,7 +2,6 @@ class Product < ApplicationRecord
   belongs_to :seller
   has_many :purchases, dependent: :destroy
 
-
   monetize :price_cents
 
   validates :name, presence: true, uniqueness: true, length: {minimum: 2}
@@ -13,6 +12,7 @@ class Product < ApplicationRecord
     if seller.present?
       product.update(seller_id: seller.id)
     else
+      product.errors.add(:seller, :bad_seller, message: 'You cannot update a product without login')
       throw(:abort)
     end
   end
@@ -28,4 +28,7 @@ class Product < ApplicationRecord
     throw(:abort) unless CurrentScope.current_user.seller == product.seller
   end
 
+  def self.allowed_to_create?
+    CurrentScope.current_user.seller.present?
+  end
 end
