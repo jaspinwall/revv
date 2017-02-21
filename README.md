@@ -82,3 +82,7 @@ The product model has the class method Product.allowed_to_create? which returns 
 that determines whether the logged user is allowed to create a new product. This method
 can be used also to make Show/Edit/Destroy visible, but it is not implemented to test the
 callbacks.
+
+The products table is editable, so the app uses the rails optimistic locking to prevent two users
+to edit the same record. The second user updating the product will receive an error notifying him
+that the record can't be updated.
