@@ -26,7 +26,7 @@ class StripeController < ApplicationController
   private
 
   def oauth_url(params)
-    @client ||= OAuth2::Client.new(
+    client = OAuth2::Client.new(
       Rails.application.secrets.stripe_client_id,
       Rails.application.secrets.stripe_secret_key,
       {
@@ -36,20 +36,19 @@ class StripeController < ApplicationController
       }
     ).auth_code
 
-    url = @client.authorize_url(
+    url = client.authorize_url(
       {
         scope: 'read_write',
         stripe_landing: 'login'
       }.merge(params))
 
     restclient_get(url)
-    #RestClient.get url
 
     [url, nil]
   end
 
   def verify!(code)
-    @client ||= OAuth2::Client.new(
+    client = OAuth2::Client.new(
       Rails.application.secrets.stripe_client_id,
       Rails.application.secrets.stripe_secret_key,
       {
@@ -59,15 +58,18 @@ class StripeController < ApplicationController
       }
     ).auth_code
 
-    data = @client.get_token(code, {
+    data = client.get_token(code, {
       headers: {
         'Authorization' => "Bearer #{Rails.application.secrets.stripe_secret_key}"
       }
     })
 
+    n = current_user.email.index('@') - 1
+    seller_name = current_user.email[0..n]
+
     Seller.create(
       user: current_user,
-      name: current_user.email,
+      name: seller_name,
       stripe_user_id: data.params['stripe_user_id'],
       publishable_key: data.params['stripe_publishable_key'],
       secret_key: data.token
