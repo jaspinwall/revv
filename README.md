@@ -18,13 +18,26 @@ When the user presses the Pay button, a stripe trasaction is generated, the purc
 
 This app uses the gem Money to handle the interface for currency with ActiveRecord.
 
-The app implements thread_mattr_accessor, a new feature from Rails 5, to pass the current_user from the controller to the model.
+The app implements thread_mattr_accessor, a new feature from Rails 5, to pass 
+the current_user from the controller to the model. The use of threads to pass data
+from the controller to the model must be kept to a minimum.
+We should avoid poluting classes and objects with 'magic' global variables.
+I feel this is one of the few cases it is appropiate to use.
+Most request require usesr authentication and 
+their actions and activities are dependent on the user permissions.
+By using CurrentScope class, the application shares the current_user across avoiding
+passing it as parameter in each method call.
 
-The buyer receives an email when the order is successfully executed with the basic purchase information. To view the emails generated, go to [App Generated Email](http://173.66.176.122:1080/ "Mail")
+This project implements email delivery for new purchases and account connection.
+The buyer receives an email when the order is successfully executed with the 
+basic purchase information. 
+The seller receives an email when he successfully connects his stripe account
+to the application.
+To view the emails generated, 
+go to the link [App Generated Email](http://173.66.176.122:1080/ "Mail")
 
-When a seller connects his Stripe account an email is also generated.
-
-The app was generated with scaffold. There are five model/controller/view plus the User model used by devise.
+The app models and controllers were generated with the generic scaffold. 
+There are five model/controller/view plus the User model used by devise.
 
 ```
 User
@@ -67,16 +80,30 @@ The product controller uses three callbacks. Note that Rails 5 requires the thro
 prevent the action. Note also that Rails 5 makes belongs_to requires the associated record, in
 contrast to previous version that the associated record was optional.
 
-After_create to associate the new product with the current user as the product seller. The before_update and before_destroy check that the action is performed by product seller and prevents either a buyer or other sellers to make changes or delete the product.
-The controllers are left generic to allow the demonstration of the callback feature. 
+After_create callback associates the newly created product seller with the current user.
+The before_update and before_destroy callbacks check that the actions update and destroy 
+is only performed by product's seller. 
+These callbacks prevent either a buyer or other sellers to make changes or delete the products
+which don't belong to them.
+For this project, the controllers are purposely left generic to make it easy
+the demonstration of these callbacks feature. 
 
 It is the Rails philosophy to keep the controllers thin, to restrict the models to act mostly
 on persisting and retrieving records and to create ActiveSupport::Concern and Plain Old Ruby Objects (POGO) to deal
 with business logic or code that requires access to more than one model.
 
-To keep this application simple, I have created a ActiveSupport::Concern module StripeConnect to be mixed into the 
-StripeController using 'include StripeConnect'. StripeConnect implements the logic to connect Stripe account
-with OAuth.
+To separate areas of responsibilities, I have created a ActiveSupport::Concern module 
+StripeConnect to be mixed into the 
+StripeController.
+StripeConnect implements the Oauth logic to connect the sellers' Stripe account 
+with the application.
+We achieve this by using 'include StripeConnect'. 
+Another valid approach would be to create a Ruby class to decouple the logic.
+I used the ActiveSupport::Concern to show how Rails allows the developer
+to keep controllers and models simpler and thinner. 
+Mixins and inheritance are very important techniques, each having advantagages modeling
+real world objects and behaviors.
+
 
 The product model has the class method Product.allowed_to_create? which returns a boolean 
 that determines whether the logged user is allowed to create a new product. This method
