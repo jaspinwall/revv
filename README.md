@@ -78,7 +78,7 @@ Charge
 
 The product controller uses three callbacks. Note that Rails 5 requires the throw(:abort) to
 prevent the action. Note also that Rails 5 makes belongs_to requires the associated record, in
-contrast to previous version that the associated record was optional.
+contrast to previous versions that the associated record was optional.
 
 After_create callback associates the newly created product seller with the current user.
 The before_update and before_destroy callbacks check that the actions update and destroy 
