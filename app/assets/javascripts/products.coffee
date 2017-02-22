@@ -1,5 +1,4 @@
 $(document).bind 'pay_products.load', (e,obj) =>
-  console.log('loading paybutton')
   submitting = false
 
   payButton = $('.pay-button')
