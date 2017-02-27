@@ -1,6 +1,74 @@
 
 
-This is a basic application to implement code for sellers and buyers.
+# Revv Technical Challenge
+
+## Intro
+
+Welcome to Revv's technical challenge.
+
+Congrats, making it this far means you've impressed us. This exercise is your chance to show off your skills to other developers at Revv and to give you a brief introduction into what Revv does.
+
+Please read this document completely. We recognize that you're busy and will need some time to complete this - do let us know about your timeframe estimate.
+
+## About Revv
+
+Revv is a donation platform built on top of Stripe Connect. Stripe Connect allows developers to easily build a "marketplace" application. This means that multiple sellers can accept payments by connecting their Stripe accounts to a central "application owner" and accept payments. The "application owner" can then take an application fee from payments made to any of the seller accounts.
+
+The principle behind Revv is the same as any marketplace application, except that rather than selling goods or services, Revv allows nonprofits to accept donations. You can read about Stripe Connect here: https://stripe.com/connect
+
+## The Challenge
+
+Your task is to build a basic storefront application by integrating Stripe Connect into a Rails app. For simplicity's sake, your marketplace will have only 1 seller, and does not necessarily need to have a user authentication system (but if you have time and feel inclined - go right ahead!).
+
+Here are the requirements of the app:
+
+- I can add, edit and delete products from the store.
+- I can view all the products that are currently being sold on the store.
+- I can view details about a specific product, and purchase that product.
+- When I purchase a product from the store, the store itself (application owner) earns a 10% fee on the price of the product.
+- After a successful purchase, I am shown a thank you page that has details of my purchase.  (Or for bonus points, I receive an email.)
+
+Remember, we are more interested in your ability to effectively integrate Stripe's API using Rails than we are in your CSS or JS prowess. It's up to you how much time you want to spend on the appearance/theme/branding of your storefront, but it should look presentable and be user friendly. You won't be penalized for using Rails scaffolding, CSS frameworks/templates etc.
+
+## Hints
+
+Here are some pointers to get you started:
+
+- Give the [Connect docs](https://stripe.com/docs/connect) a good read. You will need to set up two Stripe accounts for this app, an application owner (parent) and a seller (child). You will need to connect the seller to the application owner using the OAuth flow. You will be using "standalone accounts" to do this: https://stripe.com/docs/connect/standalone-accounts
+
+- You will be processing payments in test mode on your application, since your application will likely not have an SSL certificate. In order to charge a credit card, Stripe must first validate the card, return a one-time use token, and pass that token to your application through your payment form. The easiest way to achieve this is to use Stripe's out-of-the-box payment form, [Stripe Checkout](https://stripe.com/docs/tutorials/checkout]). However, you could also [obtain and submit the token manually](https://stripe.com/docs/tutorials/forms) by including Stripe.js (if you find that simpler to understand or want more customization). Here's a [list](https://stripe.com/docs/testing#cards) of test cards we should be able to use on your app.
+
+- You will need to [make stripe Charges](https://stripe.com/docs/connect/payments-fees) directly on the seller's stripe account. For this challenge, you do not necessarily need to create Customers within stripe.
+
+Some helpful gems: `stripe` and `devise`
+
+- Try not to use other solutions out there, we want to see your process from inception to deployment
+- To help style your application, use Bootstrap.
+
+## What are we looking for?
+
+In no particular order:
+
+- legible, meaningful and concise code
+- rails & ruby style and best practices
+- ability to read, understand api docs and implement effectively
+- ability to use git effectively and create meaningful commits, helpful README etc
+- ability to take an idea from inception to deliverable
+- ability to use gems effectively where appropriate
+- ability to write meaningful tests
+- ability to write CSS / JS cleanly
+
+## Deliverables
+
+- Your app must be deployed to a public facing URL (Heroku's free tier is probably your best bet)
+- Source code must be viewable on Github
+- We'll need access to the application owner and seller Stripe accounts that you create.
+- Documentation on your software engineering process (nothing crazy, a markdown README in the repository is sufficient)
+
+
+# Solution
+
+ This is a basic application to implement code for sellers and buyers.
 It implement DEVISE for user authentication. 
 
 Any registered user is automatically added as a buyer. To become a seller
