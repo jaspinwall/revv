@@ -68,7 +68,7 @@ A buyer can purchase a product one at a time by clicking the pay link next to th
 
 The user must press the order button in the pay page to purchase the product. At this time a modal window is open with the credit card, expiration date and CVC code input elements.
 
-When the user presses the Pay button, a stripe trasaction is generated, the purchase record created and a charge record with the stripe information stored.
+When the user presses the Pay button, a stripe transaction is generated, the purchase record created and a charge record with the stripe information stored.
 
 This app uses the gem Money to handle the interface for currency with ActiveRecord.
 
