@@ -54,6 +54,8 @@ In no particular order:
 
 # Solution
 
+The application is hosted at http://173.66.176.122:3000
+
  This is a basic application to implement code for sellers and buyers.
 It implement DEVISE for user authentication. 
 
@@ -77,7 +79,7 @@ the current_user from the controller to the model. The use of threads to pass da
 from the controller to the model must be kept to a minimum.
 We should avoid poluting classes and objects with 'magic' global variables.
 I feel this is one of the few cases it is appropiate to use.
-Most request require usesr authentication and 
+Most request require user authentication and 
 their actions and activities are dependent on the user permissions.
 By using CurrentScope class, the application shares the current_user across avoiding
 passing it as parameter in each method call.
