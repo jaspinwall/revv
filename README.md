@@ -1,20 +1,6 @@
 
 
-# Revv Technical Challenge
-
-## Intro
-
-Welcome to Revv's technical challenge.
-
-Congrats, making it this far means you've impressed us. This exercise is your chance to show off your skills to other developers at Revv and to give you a brief introduction into what Revv does.
-
-Please read this document completely. We recognize that you're busy and will need some time to complete this - do let us know about your timeframe estimate.
-
-## About Revv
-
-Revv is a donation platform built on top of Stripe Connect. Stripe Connect allows developers to easily build a "marketplace" application. This means that multiple sellers can accept payments by connecting their Stripe accounts to a central "application owner" and accept payments. The "application owner" can then take an application fee from payments made to any of the seller accounts.
-
-The principle behind Revv is the same as any marketplace application, except that rather than selling goods or services, Revv allows nonprofits to accept donations. You can read about Stripe Connect here: https://stripe.com/connect
+# Technical Challenge
 
 ## The Challenge
 
